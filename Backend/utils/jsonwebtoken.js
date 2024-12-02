@@ -12,7 +12,7 @@ const jwtToken = (userId, res) => {
         httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         sameSite: "strict",
-        secure: process.env.SECURE !== 'development', // Secure only in production
+        secure: true // Secure only in production
     });
 
     // Optionally return the token
