@@ -7,7 +7,7 @@ export default defineConfig({
   server:{
     proxy:{
       '/api':{
-        target:'http://localhost:4004',
+        target:'https://chat-app-xibr.onrender.com/',
         secure:false
       }
     }
