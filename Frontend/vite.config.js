@@ -7,7 +7,7 @@ export default defineConfig({
   server:{
     proxy:{
       '/api':{
-        target:'http://https://real-time-chat-app-13d6.onrender.com:4004',
+        target:'http://localhost:4004',
         secure:false
       }
     }

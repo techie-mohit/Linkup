@@ -225,7 +225,7 @@ function Sidebar({onSelectUser}) {
                                                 <div>
                                                     {newMessageUsers.receiverId === authUser._id && newMessageUsers.senderId === user._id ?
                                                     <div className='rounded-full bg-green-600 text-sm text-white px-[4px]'>+1</div>:<></>
-                    }
+                                                    }
                                                 </div>
                                             
 
