@@ -1,80 +1,78 @@
 import User from '../Models/userModels.js';
 import Conversation from '../Models/conversationModels.js';
 
+// Controller 1: Search Users by Username or Fullname
 export const getUserBySearch = async (req, res) => {
-    try{
-        const search = req.query.search || '';
-        const currentUserId = req.user._id;
-        const user = await User.find({
-            $and: [
-                {
-                    $or: [
-                        {username:{ $regex:'.*'+search+'.*', $options: 'i'}},  // In postman we search like that http://localhost:3000/api/user/search?search=username or fullname
-                        {fullname:{ $regex:'.*'+search+'.*', $options: 'i'}},
+  try {
+    const search = req.query.search || '';
+    const currentUserId = req.user._id;
 
-                    ]
-                },{
-                    _id: {$ne: currentUserId}
-                }
-            ]
-        }).select("-password").select("-email");
+    const users = await User.find({
+      $and: [
+        {
+          $or: [
+            { username: { $regex: '.*' + search + '.*', $options: 'i' } },
+            { fullname: { $regex: '.*' + search + '.*', $options: 'i' } },
+          ],
+        },
+        { _id: { $ne: currentUserId } },
+      ],
+    }).select('-password -email');
 
-        res.status(200).send(user)
+    const usersWithLastSeen = users.map((u) => ({
+      _id: u._id,
+      username: u.username,
+      profile_pic: u.profile_pic,
+      lastSeen: u.lastSeen,
+    }));
 
-    }
-    catch(error){
-        res.status(500).send({
-            success: false,
-            message: error
-        })
-        console.log(error);
-    }
+    res.status(200).json(usersWithLastSeen);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error });
+  }
+};
 
-}
-
-
+// Controller 2: Get Chat Partners (current chatters)
 export const getCurrentChatters = async (req, res) => {
-    try{
+  try {
+    const currentUserId = req.user._id;
 
-        // sort all the user with their last message
-        const currentUserId = req.user._id;
-        const currentChatters = await Conversation.find({
-            participants: currentUserId
-        }).sort({
-            updatedAt:-1
-        });
+    const currentChatters = await Conversation.find({
+      participants: currentUserId,
+    }).sort({ updatedAt: -1 });
 
-        // if there is no conversation then return empty array
-        if(!currentChatters || currentChatters.length === 0){
-            return res.status(200).send([])
-        }
-
-        // get all the participants id from the conversation
-        const participantsIds = currentChatters.reduce((ids, conversation)=>{
-            const otherParticipants = conversation.participants.filter(id => id !== currentUserId);
-            return [...ids, ...otherParticipants];
-        },[]);
-
-        // remove duplicate participants id
-        const otherParticipantsIds = participantsIds.filter(id => id.toString() !== currentUserId.toString());
-
-        // get the user details of the participants
-
-        const user = await User.find({
-            _id: {$in: otherParticipantsIds}
-        }).select("-password").select("-email");
-
-        // sort the user array according to the last message
-
-        const users = otherParticipantsIds.map(id => user.find(user => user._id.toString() === id.toString()));
-
-        res.status(200).send(users);
+    if (!currentChatters || currentChatters.length === 0) {
+      return res.status(200).json([]);
     }
-    catch(error){
-        res.status(500).send({
-            success: false,
-            message: error
-        })
-        console.log(error);
-    }
-}
+
+    // Get all participant IDs excluding the current user
+    const participantsIds = currentChatters.reduce((ids, conversation) => {
+      const otherParticipants = conversation.participants.filter(
+        (id) => id.toString() !== currentUserId.toString()
+      );
+      return [...ids, ...otherParticipants];
+    }, []);
+
+    const uniqueIds = [...new Set(participantsIds.map((id) => id.toString()))];
+
+    const users = await User.find({
+      _id: { $in: uniqueIds },
+    }).select('-password -email');
+
+    const usersWithLastSeen = uniqueIds.map((id) => {
+      const u = users.find((user) => user._id.toString() === id);
+      return {
+        _id: u._id,
+        username: u.username,
+        profile_pic: u.profile_pic,
+        lastSeen: u.lastSeen,
+      };
+    });
+
+    res.status(200).json(usersWithLastSeen);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error });
+  }
+};

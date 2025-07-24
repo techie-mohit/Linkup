@@ -9,7 +9,6 @@ import { FaArrowCircleLeft } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import userConversation from '../Zustand/useConversation';
 import { useSocketContext } from '../context/SocketContext';
-import notify from '../assets/notification-sound-2-253324.mp3';
 
 
 
@@ -147,6 +146,8 @@ function Sidebar({onSelectUser}) {
                 </button>
                 
             </form>
+
+            
             <img 
                 onClick={()=>navigate(`/profile/${authUser?._id}`)} 
                 src={authUser?.profile_pic} 
@@ -165,11 +166,19 @@ function Sidebar({onSelectUser}) {
                                             ${selectedUserId === user?._id ? 'bg-sky-500' : ''}`}>
 
                                         {/* Socket is Online         */}
-                                        <div className={`avatar ${isOnline[index] ? 'online':''}`}>
-                                            <div className="w-12 rounded-full h-12">
-                                                <img src={user.profile_pic} alt='user.img' />
-                                            </div>
-                                            </div>
+                                        <div className="relative w-12 h-12">
+  <div className="w-12 h-12 rounded-full overflow-hidden">
+    <img src={user.profile_pic} alt="user.img" />
+  </div>
+  {user._id !== authUser._id && (
+    <span
+      className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${
+        onlineUser.includes(user._id) ? 'bg-green-500' : 'bg-gray-400'
+      }`}
+    />
+  )}
+</div>
+
                                             <div className='flex flex-col flex-1'>
                                                 <p className='font-bold text-gray-950'>{user.username}</p>
                                             </div> 
@@ -213,11 +222,19 @@ function Sidebar({onSelectUser}) {
                                                 ${selectedUserId === user?._id ? 'bg-sky-500' : ''}`}>
 
                                             {/* Socket is Online         */}
-                                            <div className={`avatar ${isOnline[index] ? 'online':''} `}>
-                                                <div className="w-12 rounded-full h-12">
-                                                    <img src={user.profile_pic} alt='user.img' />
-                                                </div>
-                                                </div>
+                                            <div className="relative w-12 h-12">
+  <div className="w-12 h-12 rounded-full overflow-hidden">
+    <img src={user.profile_pic} alt="user.img" />
+  </div>
+  {user._id !== authUser._id && (
+    <span
+      className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${
+        onlineUser.includes(user._id) ? 'bg-green-500' : 'bg-gray-400'
+      }`}
+    />
+  )}
+</div>
+
                                                 <div className='flex flex-col flex-1'>
                                                     <p className='font-bold text-white'>{user.username}</p>
                                                 </div> 

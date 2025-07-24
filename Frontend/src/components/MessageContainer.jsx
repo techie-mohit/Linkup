@@ -34,7 +34,7 @@ const MessageContainer = ({onBackUser}) => {
 
   useEffect(()=>{
     setTimeout(()=>{
-      lastMessageRef?.current?.scrollIntoView({behaviour: "smooth"})
+      lastMessageRef?.current?.scrollIntoView({behavior: "smooth"})
     },100)
   },[messages]);
 
