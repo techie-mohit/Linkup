@@ -13,7 +13,7 @@ export const getReceiverSocketId = (receiverId) => {
 
 const io = new Server(server, {
     cors: {
-        origin: ['http://localhost:5173'], // use http unless you’ve set up https locally
+        origin: ['https://linkup-u40u.onrender.com'], // use http unless you’ve set up https locally
         methods: ['GET', 'POST']
     }
 });

@@ -16,7 +16,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173/', // use http unless you’ve set up https locally
+    origin: 'https://linkup-u40u.onrender.com', // use http unless you’ve set up https locally
     credentials: true
 }));
 

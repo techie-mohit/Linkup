@@ -7,7 +7,7 @@ export default defineConfig({
   server:{
     proxy:{
       '/api':{
-        target:'http://localhost:4004',
+        target:'https://linkup-u40u.onrender.com',
         secure:false
       }
     }
