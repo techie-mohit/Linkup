@@ -12,12 +12,16 @@ import cors from 'cors';
 const __dirname = path.resolve();
 
 dotenv.config();
+const allowedOrigins = [
+  "https://linkup-u40u.onrender.com",
+  "http://localhost:5173"
+];
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://linkup-u40u.onrender.com', // use http unless you’ve set up https locally
-    credentials: true
+  origin: allowedOrigins,
+  credentials: true
 }));
 
 

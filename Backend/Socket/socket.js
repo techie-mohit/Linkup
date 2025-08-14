@@ -10,11 +10,16 @@ const userSocketmap = {}; // { userId: socketId }
 export const getReceiverSocketId = (receiverId) => {
     return userSocketmap[receiverId];
 };
+const allowedOrigins = [
+  "https://linkup-u40u.onrender.com",
+  "http://localhost:5173"
+];
 
 const io = new Server(server, {
     cors: {
-        origin: ['https://linkup-u40u.onrender.com'], // use http unless you’ve set up https locally
-        methods: ['GET', 'POST']
+        origin: allowedOrigins,
+        methods: ['GET', 'POST'],
+        credentials: true,
     }
 });
 
