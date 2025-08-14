@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const socketInstance = io("wss://linkup-u40u.onrender.com", {
+      const socket = io("wss://linkup-u40u.onrender.com", {
         query: { userId: authUser?._id },
         transports: ["websocket"], // skip long-polling
         withCredentials: true,
