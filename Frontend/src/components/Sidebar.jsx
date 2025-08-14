@@ -110,8 +110,8 @@ function Sidebar({onSelectUser}) {
 
     //logout
     const handleLogout = async()=>{
-        const confirmlogout = window.prompt("type 'UserName' To LOGOUT");  // window.prompt is used for verification  with username after logout
-        if (confirmlogout === authUser.username) {
+        const confirmlogout = window.prompt("Are you sure you want to logout");  // window.prompt is used for verification  with username after logout
+        if (confirmlogout) {
             setLoading(true)
             try {
                 const logout = await axios.post('/api/auth/logout')
