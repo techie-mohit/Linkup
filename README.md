@@ -72,7 +72,7 @@ Linkup/
 
 1. **Clone the repository:**
    ```powershell
-   git clone https://github.com/your-username/Linkup.git
+   git clone https://github.com/techie-mohit/Linkup.git
    cd Linkup
    ```
 
