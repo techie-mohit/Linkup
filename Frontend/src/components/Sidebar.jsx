@@ -110,7 +110,7 @@ function Sidebar({onSelectUser}) {
 
     //logout
     const handleLogout = async()=>{
-        const confirmlogout = window.prompt("Are you sure you want to logout");  // window.prompt is used for verification  with username after logout
+        const confirmlogout = window.confirm("Are you sure you want to logout");  // window.prompt is used for verification  with username after logout
         if (confirmlogout) {
             setLoading(true)
             try {
